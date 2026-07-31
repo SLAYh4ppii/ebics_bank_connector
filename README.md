@@ -1,76 +1,76 @@
 # EBICS Bank Connector
 
-Eine selbst gehostete Banking-Erweiterung für **ERPNext 16**, die Bankkonten
-über **EBICS** automatisch überwacht, Umsätze importiert (CAMT.053) und
-Zahlungen automatisch Rechnungen zuordnet.
+A self-hosted banking extension for **ERPNext 16** that monitors bank accounts
+via **EBICS**, imports transactions (CAMT.053), and automatically matches
+payments to invoices.
 
-> Bank verbinden → Synchronisieren → Automatisch buchen.
+> Connect bank → synchronize → auto-reconcile.
 
-Eine Alternative zu GoCardless Banking, aber mit **EBICS** und vollständiger
-ERPNext-16-Integration. Entwickelt und getestet mit der **VR-Bank NordRhön eG**,
-funktioniert aber mit jeder EBICS-fähigen Bank (Volksbank, Sparkasse, …).
+An alternative to GoCardless Banking, but built on **EBICS** with full
+ERPNext 16 integration. Developed and tested with **VR-Bank NordRhön eG**,
+works with any EBICS-capable bank (Volksbank, Sparkasse, …).
 
 ---
 
 ## Highlights
 
-- **Setup-Wizard** „Bank verbinden" (Banking → Bank verbinden) — in 5 Minuten
-  eingerichtet, keine EBICS-Kenntnisse nötig.
-- **EBICS 2.4 / 2.5 / 3.0** über die ausgetauschte `ebics-python` Bibliothek.
-- **CAMT.053** (und optional **CAMT.054**) Import mit Duplikat-Erkennung.
-- **Automatische Zahlungszuordnung** (Rechnungsnummer → Kunden-/Lieferanten-ID →
-  Verwendungszweck → Betrag) mit automatischer `Payment Entry`-Erstellung.
-- **Monitoring**: offene Rechnungen und fehlende Abo-Zahlungen werden
-  automatisch als ToDo + E-Mail gemeldet.
-- **Dashboard** „Bank Automation" mit Status, letzter Synchronisation,
-  neuen Umsätzen, nicht zugeordneten Zahlungen und Fehlern.
-- **Sicherheit**: Passwörter als Frappe `Password`-Felder, rollenbasierte
-  Berechtigung (Bank Administrator / Buchhalter / Mitarbeiter), EBICS-Schlüssel
-  verschlüsselt im `private/files`-Verzeichnis der Site.
+- **Setup wizard** "Connect bank" (Banking → Connect bank) — up and running
+  in 5 minutes, no EBICS knowledge required.
+- **EBICS 2.4 / 2.5 / 3.0** via the `ebics-python` library.
+- **CAMT.053** (and optionally **CAMT.054**) import with duplicate detection.
+- **Automatic payment matching** (invoice number → customer/supplier ID →
+  remittance info → amount) with automatic `Payment Entry` creation.
+- **Monitoring**: open invoices and missing subscription payments are
+  reported automatically as ToDos + emails.
+- **Dashboard** "Bank Automation" with status, last sync, new transactions,
+  unmatched payments, and errors.
+- **Security**: passwords stored as Frappe `Password` fields, role-based
+  permissions (Bank Administrator / Accountant / Employee), EBICS keys
+  encrypted in the site's `private/files` directory.
 - **API**: `POST /api/method/ebics_bank_connector.sync_now`,
   `GET /api/method/ebics_bank_connector.status`.
 
 ---
 
-## Schnellstart
+## Quick start
 
 ```bash
-# 1. App holen und installieren
+# 1. Get and install the app
 bench get-app https://github.com/example/ebics_bank_connector
 bench --site site1.local install-app ebics_bank_connector
 
-# 2. EBICS-Backend-Bibliothek installieren
+# 2. Install the EBICS backend library
 bench --site site1.local pip install ebics-python lxml
 
-# 3. Im ERPNext: Banking → Bank verbinden
+# 3. In ERPNext: Banking → Connect bank
 ```
 
-Detaillierte Anleitung: [`docs/installation.md`](docs/installation.md) und
+Detailed guides: [`docs/installation.md`](docs/installation.md) and
 [`docs/user_manual.md`](docs/user_manual.md).
 
 ---
 
-## Architektur
+## Architecture
 
 ```
 ebics_bank_connector/
 ├── ebics_bank_connector/
 │   ├── hooks.py
 │   ├── install.py
-│   ├── api.py              # öffentliche API-Endpunkte
-│   ├── sync.py             # Synchronisations-Engine + Scheduler
-│   ├── matching.py         # Matching-Engine
-│   ├── monitoring.py       # Zahlungsüberwachung
-│   ├── notifications.py    # E-Mail + ToDo Benachrichtigungen
+│   ├── api.py              # public API endpoints
+│   ├── sync.py             # sync engine + scheduler
+│   ├── matching.py         # matching engine
+│   ├── monitoring.py       # payment monitoring
+│   ├── notifications.py    # email + ToDo notifications
 │   ├── erpnext_integration.py
 │   ├── ebics/
-│   │   ├── connection.py   # austauschbare Backend-Factory
-│   │   ├── client.py        # High-Level EBICS-Client
-│   │   ├── parser.py        # ISO 20022 XML-Helfer
-│   │   ├── camt_parser.py   # CAMT.053/054 Parser
+│   │   ├── connection.py   # swappable backend factory
+│   │   ├── client.py       # high-level EBICS client
+│   │   ├── parser.py       # ISO 20022 XML helpers
+│   │   ├── camt_parser.py  # CAMT.053/054 parser
 │   │   └── backends/
-│   │       ├── ebics_python.py   # Default-Backend
-│   │       └── stub.py          # Test-Backend
+│   │       ├── ebics_python.py   # default backend
+│   │       └── stub.py          # test backend
 │   ├── doctype/
 │   │   ├── ebics_settings/
 │   │   ├── ebics_bank_account/
@@ -82,31 +82,37 @@ ebics_bank_connector/
 └── docs/
 ```
 
-### EBICS-Backend ist austauschbar
+### EBICS backend is swappable
 
-Das Standard-Backend nutzt [`ebics-python`](https://pypi.org/project/ebics-python/).
-Ein eigenes Backend lässt sich über `site_config.json` einbinden:
+The default backend uses [`ebics-python`](https://pypi.org/project/ebics-python/).
+A custom backend can be configured in **Bank Automation Settings** (Dashboard)
+via the "EBICS Backend" field, or as a fallback in `site_config.json`:
 
 ```json
 { "ebics_backend": "myapp.my_ebics_backend" }
 ```
 
-Das Backend-Modul muss eine `create(**kwargs)`-Factory mit den Methoden
-`ping`, `send_ini`, `send_hia`, `fetch_bank_keys`, `download`, `list_accounts`
-bereitstellen. Siehe `ebics_bank_connector/ebics/backends/ebics_python.py`.
+The backend module must expose a `create(**kwargs)` factory with the methods
+`ping`, `send_ini`, `send_hia`, `fetch_bank_keys`, `download`, `list_accounts`.
+See `ebics_bank_connector/ebics/backends/ebics_python.py`.
 
 ---
 
-## Rollen
+## Roles
 
-| Rolle | Rechte |
+| Role | Permissions |
 |---|---|
-| **Bank Administrator** | Verbindungen anlegen/ändern, Schlüssel initialisieren, Einstellungen |
-| **Bank Buchhalter** | Umsätze sehen, abstimmen, Matching Tasks bearbeiten |
-| **Bank Mitarbeiter** | Umsätze/Tasks nur lesen |
+| **Bank Administrator** | Create/edit connections, initialize keys, settings |
+| **Bank Accountant** | View transactions, reconcile, work on matching tasks |
+| **Bank Employee** | Read-only access to transactions/tasks |
 
 ---
 
-## Lizenz
+## License
 
-MIT
+MIT — see [`LICENSE`](LICENSE).
+
+This software may be freely used, modified, and distributed. The copyright
+notice (`Copyright (c) 2026 h4ppii`) must, however, be preserved in all
+copies. Passing the work off as your own without attribution violates the
+license terms.

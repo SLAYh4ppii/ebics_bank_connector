@@ -1,13 +1,13 @@
 # Installation
 
-## Voraussetzungen
+## Prerequisites
 
 - ERPNext 16 (Frappe Framework 16)
-- Linux Ubuntu/Debian (getestet in Proxmox LXC)
-- Python ≥ 3.10
-- Eine EBICS-fähige Bank (z.B. VR-Bank NordRhön eG)
+- Linux Ubuntu/Debian (tested in Proxmox LXC)
+- Python >= 3.10
+- An EBICS-capable bank (e.g. VR-Bank NordRhön eG)
 
-## 1. App installieren
+## 1. Install the app
 
 ```bash
 cd ~/frappe-bench
@@ -17,45 +17,46 @@ bench get-app https://github.com/example/ebics_bank_connector
 bench --site site1.local install-app ebics_bank_connector
 ```
 
-## 2. EBICS-Backend-Bibliothek installieren
+## 2. Install the EBICS backend library
 
 ```bash
 bench --site site1.local pip install ebics-python lxml
 ```
 
-> `ebics-python` ist das Standard-Backend. Es ist als Dependency in der
-> `pyproject.toml` deklariert, wird aber bei `bench get-app` nicht automatisch
-> installiert — daher der explizite `pip install`.
+> `ebics-python` is the default backend. It is declared as a dependency in
+> `pyproject.toml`, but is not installed automatically by `bench get-app` —
+> hence the explicit `pip install`.
 
-## 3. Scheduler aktivieren
+## 3. Enable the scheduler
 
-Der Scheduler läuft automatisch, sobald `bench schedule` läuft (Standard in
-Produktion). Die App registriert:
+The scheduler runs automatically once `bench schedule` is running (standard
+in production). The app registers:
 
-- **stündlich**: Synchronisation aller Verbindungen mit Intervall „Stündlich"
-- **täglich**: Zahlungsüberwachung (offene Rechnungen, fehlende Abo-Zahlungen)
+- **hourly**: synchronization of all connections set to "Hourly"
+- **daily**: payment monitoring (open invoices, missing subscription payments)
+  and CAMT-XML retention cleanup
 
-## 4. Rollen zuweisen
+## 4. Assign roles
 
-System Settings → User → Roles:
+System Settings -> User -> Roles:
 
-- **Bank Administrator**: Bank verbinden, Einstellungen
-- **Bank Buchhalter**: Umsätze abstimmen
-- **Bank Mitarbeiter**: nur Lesezugriff
+- **Bank Administrator**: connect banks, manage settings
+- **Bank Accountant**: reconcile transactions
+- **Bank Employee**: read-only access
 
-## 5. Bank verbinden
+## 5. Connect a bank
 
-Im ERPNext: **Banking → Bank verbinden** (Setup-Wizard).
+In ERPNext: **Banking -> Connect bank** (setup wizard).
 
-Siehe `user_manual.md` für die Schritt-für-Schritt-Anleitung.
+See `user_manual.md` for the step-by-step guide.
 
-## Deinstallation
+## Uninstallation
 
 ```bash
 bench --site site1.local uninstall-app ebics_bank_connector
 bench remove-app ebics_bank_connector
 ```
 
-Die EBICS-Schlüssel liegen unter
-`<site>/private/files/ebics_keys/<verbindung>/` und werden beim Uninstall
-**nicht** gelöscht — ggf. manuell entfernen.
+The EBICS keys are stored under
+`<site>/private/files/ebics_keys/<connection>/` and are **not** deleted on
+uninstall — remove them manually if no longer needed.
