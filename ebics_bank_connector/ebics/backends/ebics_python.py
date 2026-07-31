@@ -46,15 +46,18 @@ def create(
         ) from exc
 
     # Allow HTTP URLs for local testing (e.g. LibEuFin sandbox).
-    # fintech enforces HTTPS; we patch the validator when the URL is HTTP.
-    if host_url and host_url.startswith("http://"):
-        _patch_fintech_for_http()
+    # fintech enforces HTTPS; we create the bank object with a dummy
+    # HTTPS URL and then override the internal _url attribute.
+    use_http = host_url and host_url.startswith("http://")
+    dummy_url = "https://localhost/dummy" if use_http else host_url
 
     keyring = EbicsKeyRing(
         keys=keyring_path,
         passphrase=passphrase or None,
     )
-    bank = EbicsBank(keyring=keyring, hostid=host_id, url=host_url)
+    bank = EbicsBank(keyring=keyring, hostid=host_id, url=dummy_url)
+    if use_http:
+        object.__setattr__(bank, "_url", host_url)
     user = EbicsUser(keyring=keyring, partnerid=partner_id, userid=user_id)
 
     if allow_create:
@@ -146,42 +149,3 @@ def _to_bytes(value) -> bytes:
     if isinstance(value, (bytes, bytearray)):
         return bytes(value)
     return str(value).encode("utf-8")
-
-
-_HTTP_PATCHED = False
-
-
-def _patch_fintech_for_http():
-    """Monkey-patch fintech to allow HTTP URLs (for local sandbox testing).
-
-    The fintech library enforces HTTPS for EBICS endpoints. For local
-    testing with LibEuFin sandbox (which only serves HTTP) we relax the
-    URL validation. This is never active for real bank connections.
-    """
-    global _HTTP_PATCHED
-    if _HTTP_PATCHED:
-        return
-    try:
-        import fintech.ebics
-
-        # Replace the url property with one that accepts any URL scheme
-        fintech.ebics.EbicsBank.url = property(
-            lambda self: self._url,
-            lambda self, value: object.__setattr__(self, "_url", value),
-        )
-
-        # Also patch __init__ in case validation happens there
-        original_init = fintech.ebics.EbicsBank.__init__
-
-        def patched_init(self, keyring, hostid, url, *args, **kwargs):
-            try:
-                original_init(self, keyring, hostid, url, *args, **kwargs)
-            except (ValueError, Exception):
-                # URL validation failed; force-set and retry without url
-                object.__setattr__(self, "_url", url)
-
-        fintech.ebics.EbicsBank.__init__ = patched_init
-        _HTTP_PATCHED = True
-        log.info("fintech patched for HTTP support (local testing only)")
-    except Exception as e:
-        log.warning("Could not patch fintech for HTTP: %s", e)
