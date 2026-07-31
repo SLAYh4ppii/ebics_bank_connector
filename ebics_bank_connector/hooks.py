@@ -1,8 +1,8 @@
 app_name = "ebics_bank_connector"
 app_title = "EBICS Bank Connector"
-app_publisher = "EBICS Bank Connector"
+app_publisher = "h4ppii"
 app_description = "EBICS banking automation for ERPNext 16 (VR-Bank NordRhön eG and other EBICS banks)"
-app_email = "admin@example.com"  # TODO: real email before publish
+app_email = ""
 app_license = "MIT"
 
 required_apps = ["erpnext"]

@@ -36,7 +36,7 @@ works with any EBICS-capable bank (Volksbank, Sparkasse, …).
 
 ```bash
 # 1. Get and install the app
-bench get-app https://github.com/example/ebics_bank_connector
+bench get-app https://github.com/SLAYh4ppii/ebics_bank_connector
 bench --site site1.local install-app ebics_bank_connector
 
 # 2. Install the EBICS backend library
