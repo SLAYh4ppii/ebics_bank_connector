@@ -10,14 +10,14 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "GPL-3.0-or-later"}
 dynamic = ["version"]
-# NOTE: The EBICS backend library (fintech, ebicsclient, ebicsPy, ...) is NOT
-# declared as a dependency here, because every available pure-Python EBICS
-# library is either proprietary or copyleft-restricted. Install the backend of
-# your choice manually, e.g.:
-#   bench --site site1.local pip install fintech lxml
-# The app installs and runs without an EBICS backend (stub backend for tests);
-# a real backend is only needed for live bank communication.
+# The EBICS backend library. "fintech" is the only mature pure-Python EBICS
+# library on PyPI that supports EBICS 2.4/2.5/3.0. Note: fintech has its own
+# proprietary license (free for non-commercial use, paid for commercial use).
+# This app's GPL-3.0 license does not affect the fintech library's license.
+# See https://www.joonis.de/en/fintech/license/ for fintech licensing details.
 dependencies = [
+    # EBICS protocol backend (default, swappable via connection.py)
+    "fintech>=7.0",
     # CAMT.053 / ISO 20022 XML parsing
     "lxml>=4.9",
 ]
