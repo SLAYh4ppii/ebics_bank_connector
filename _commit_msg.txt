@@ -1,9 +1,0 @@
-Switch to GPL-3.0, make EBICS backend optional, fix install
-
-- Replace MIT with GPL-3.0-or-later (LICENSE, pyproject.toml, hooks.py, README)
-- Remove fintech/ebics-python hard dependency from pyproject.toml so
-  bench install-app succeeds without an EBICS library installed
-- EBICS backend is now optional: app installs and runs with stub backend,
-  user installs the EBICS library of their choice separately
-- Update installation docs to explain the optional backend setup
-- Update README license section to reflect GPL-3.0 terms
