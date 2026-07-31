@@ -1,7 +1,7 @@
 # Copyright (c) 2026, EBICS Bank Connector
-"""Default EBICS backend based on the ``ebics-python`` library.
+"""Default EBICS backend based on the ``fintech`` library (PyPI: fintech).
 
-Adapter that maps the app's needs onto the ``ebics_python`` API. The
+Adapter that maps the app's needs onto the ``fintech.ebics`` API. The
 library is imported lazily so the app can be installed even if the
 backend is swapped out for a different one.
 """
@@ -16,8 +16,8 @@ log = logging.getLogger(__name__)
 
 # EBICS order type codes
 ORDER_TYPES = {
-    "Z53": "Z53",  # CAMT.053 - bank statements
-    "Z54": "Z54",  # CAMT.054 - debit/credit notifications
+    "Z53": "C53",  # CAMT.053 - bank statements
+    "Z54": "C54",  # CAMT.054 - debit/credit notifications
 }
 
 
@@ -36,39 +36,42 @@ def create(
     allow_create: bool = False,
 ):
     try:
-        from ebics.client import EbicsClient as _PyEbicsClient  # type: ignore
-        from ebics.models import Keyring  # type: ignore
+        import fintech
+        from fintech.ebics import EbicsKeyRing, EbicsBank, EbicsUser, EbicsClient
     except ImportError as exc:  # pragma: no cover - depends on env
         raise RuntimeError(
-            "Die Bibliothek 'ebics-python' ist nicht installiert. "
-            "Bitte 'pip install ebics-python' bzw. 'bench pip install ebics-python' ausf\u00fchren."
+            "Die Bibliothek 'fintech' ist nicht installiert. "
+            "Bitte 'pip install fintech' bzw. 'bench pip install fintech' ausf\u00fchren."
         ) from exc
 
-    # ebics-python expects version strings like "3.0"
-    keyring = Keyring(
+    fintech.register()
+
+    keyring = EbicsKeyRing(
         keys=keyring_path,
         passphrase=passphrase or None,
         create=allow_create,
         version=version,
-        signature_version=signature_version,
-        encryption_version=encryption_version,
-        authentication_version=authentication_version,
+        sig_version=signature_version,
+        enc_version=encryption_version,
+        auth_version=authentication_version,
     )
-    client = _PyEbicsClient(
-        keyring=keyring,
-        host_id=host_id,
-        partner_id=partner_id,
-        user_id=user_id,
-        url=host_url,
-    )
-    return _PyEbicsAdapter(client)
+    bank = EbicsBank(keyring=keyring, hostid=host_id, url=host_url)
+    user = EbicsUser(keyring=keyring, partnerid=partner_id, userid=user_id)
+
+    if allow_create:
+        user.create_keys(keyversion=signature_version, bitlength=2048)
+
+    client = EbicsClient(bank, user)
+    return _FintechAdapter(client, bank, user)
 
 
-class _PyEbicsAdapter:
+class _FintechAdapter:
     """Thin adapter implementing the backend contract."""
 
-    def __init__(self, client):
+    def __init__(self, client, bank, user):
         self._c = client
+        self._bank = bank
+        self._user = user
 
     def ping(self):
         try:
@@ -85,17 +88,21 @@ class _PyEbicsAdapter:
 
     def fetch_bank_keys(self):
         self._c.HPB()
+        self._bank.activate_keys()
 
     def download(self, *, order_type: str, start: date, end: date, account=None) -> bytes:
-        # ebics-python exposes C53/C54 download methods which return a dict
-        # of {account_identifier: xml_content} (one entry per booked account).
-        method = {
-            "Z53": getattr(self._c, "C53", None),
-            "Z54": getattr(self._c, "C54", None),
-        }.get(order_type)
+        method_name = ORDER_TYPES.get(order_type)
+        if method_name is None:
+            raise NotImplementedError(f"Order type {order_type} not supported by backend")
+        method = getattr(self._c, method_name, None)
         if method is None:
             raise NotImplementedError(f"Order type {order_type} not supported by backend")
-        result = method(start_date=start, end_date=end)
+        result = method(start=start, end=end)
+        # confirm receipt with the bank so the download is acknowledged
+        try:
+            self._c.confirm_download()
+        except Exception:
+            log.warning("confirm_download failed for %s", order_type)
         return _extract_account_xml(result, account)
 
     def list_accounts(self):
@@ -112,10 +119,10 @@ class _PyEbicsAdapter:
 def _extract_account_xml(result, account: str | None) -> bytes:
     """Normalise the C53/C54 return value to raw XML bytes.
 
-    ebics-python returns a dict ``{account_id: xml}`` (one entry per booked
+    ``fintech`` returns a dict ``{account_id: xml}`` (one entry per booked
     account). When ``account`` (IBAN) is given we filter to that entry;
     otherwise we concatenate all statements so the parser can split them.
-    A bare bytes/str return (older backends, stub) is passed through.
+    A bare bytes/str return is passed through.
     """
     if result is None:
         return b""
@@ -125,12 +132,10 @@ def _extract_account_xml(result, account: str | None) -> bytes:
         return result.encode("utf-8")
     if isinstance(result, dict):
         if account:
-            # try exact key, then IBAN substring match
             for key, xml in result.items():
                 if key == account or (isinstance(key, str) and account in key):
                     return _to_bytes(xml)
             return b""
-        # no account filter: concatenate all statements
         parts = [_to_bytes(xml) for xml in result.values()]
         return b"\n".join(parts) if parts else b""
     return b""

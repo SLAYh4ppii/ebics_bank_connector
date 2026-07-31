@@ -1,9 +1,9 @@
 # Copyright (c) 2026, EBICS Bank Connector
 """Swappable EBICS backend factory.
 
-The default backend is the ``ebics-python`` library (henning/ebics-python,
-distributed on PyPI as ``ebics-python``). It can be replaced by any module
-that exposes an ``EbicsClient``-compatible class.
+The default backend is the ``fintech`` library (distributed on PyPI as
+``fintech``). It can be replaced by any module that exposes an
+``EbicsClient``-compatible class.
 
 The backend is selected via the ``ebics_backend`` field in the
 **Bank Automation Settings** (Dashboard). The legacy ``site_config.json``
@@ -11,7 +11,7 @@ key ``ebics_backend`` is still supported as a fallback.
 
 All bank key material is stored on disk in the site's private folder
 (``private/files/ebics_keys/<connection>/keys.pem``). The key file is
-encrypted by the ``ebics-python`` ``Keyring`` using the passphrase supplied
+encrypted by the ``fintech`` ``EbicsKeyRing`` using the passphrase supplied
 in the EBICS Settings (Frappe ``Password`` field, decrypted on demand).
 The ``private/files`` directory is not served by the web server.
 """

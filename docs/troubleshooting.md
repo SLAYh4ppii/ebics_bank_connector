@@ -7,7 +7,7 @@
 | „Verbindung zur Bank konnte nicht hergestellt werden" | Host URL prüfen, Netzwerk/Firewall, Bank online? |
 | „Der Benutzer ist bei der Bank nicht bekannt" | User ID / Partner ID falsch, oder Schlüssel noch nicht freigeschaltet |
 | „Authentifizierung fehlgeschlagen" | Schlüssel bei Bank freischalten lassen, dann erneut testen |
-| „Die Bibliothek 'ebics-python' ist nicht installiert" | `bench --site site1.local pip install ebics-python lxml` |
+| „Die Bibliothek 'fintech' ist nicht installiert" | `bench --site site1.local pip install fintech lxml` |
 
 ## Schlüssel lassen sich nicht initialisieren
 

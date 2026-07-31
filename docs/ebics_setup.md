@@ -60,7 +60,7 @@ EBICS Settings → „EBICS Schlüssel initialisieren" (wenn der Wizard-Schritt 
 
 ## Backend austauschen
 
-Standard ist `ebics-python`. Ein anderes Backend lässt sich in den
+Standard ist `fintech`. Ein anderes Backend lässt sich in den
 **Bank Automation Settings** (Dashboard) im Feld „EBICS Backend" eintragen
 (Modul-Pfad, z.B. `myapp.my_backend`).
 
@@ -78,7 +78,7 @@ Der gesamte EBICS-Pfad wurde während der Entwicklung nur mit dem Stub-Backend
 getestet. Vor dem Produktivgang **muss** eine echte Bank-Verbindung
 durchgespielt werden:
 
-- [ ] `ebics-python` Bibliothek installiert (`bench pip install ebics-python`)
+- [ ] `fintech` Bibliothek installiert (`bench pip install fintech`)
 - [ ] EBICS-Zugang bei der Bank beantragt, Informationsblatt liegt vor
 - [ ] Verbindung im Setup-Wizard angelegt (Host/Partner/User/Customer ID)
 - [ ] Schlüssel-Passphrase ≥ 16 Zeichen vergeben

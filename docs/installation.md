@@ -17,15 +17,27 @@ bench get-app https://github.com/SLAYh4ppii/ebics_bank_connector
 bench --site site1.local install-app ebics_bank_connector
 ```
 
-## 2. Install the EBICS backend library
+## 2. Install the EBICS backend library (optional)
+
+The app installs and runs without an EBICS backend (a stub backend is used
+for tests). To communicate with a real bank, install an EBICS library of
+your choice:
 
 ```bash
-bench --site site1.local pip install ebics-python lxml
+# Option A: fintech (proprietary, free for non-commercial, paid for commercial)
+bench --site site1.local pip install fintech lxml
+
+# Option B: ebicsclient (PolyForm Noncommercial, paid for commercial)
+bench --site site1.local pip install ebicsclient lxml
+
+# Option C: any other EBICS library you have a license for
 ```
 
-> `ebics-python` is the default backend. It is declared as a dependency in
-> `pyproject.toml`, but is not installed automatically by `bench get-app` —
-> hence the explicit `pip install`.
+> The EBICS backend is **not** declared as a dependency in `pyproject.toml`
+> because every available pure-Python EBICS library is either proprietary or
+> license-restricted. You choose and install the backend yourself — the app's
+> backend adapter handles the rest. See `Bank Automation Settings` in the
+> dashboard to configure which backend module to use.
 
 ## 3. Enable the scheduler
 

@@ -16,7 +16,7 @@ works with any EBICS-capable bank (Volksbank, Sparkasse, …).
 
 - **Setup wizard** "Connect bank" (Banking → Connect bank) — up and running
   in 5 minutes, no EBICS knowledge required.
-- **EBICS 2.4 / 2.5 / 3.0** via the `ebics-python` library.
+- **EBICS 2.4 / 2.5 / 3.0** via the `fintech` library.
 - **CAMT.053** (and optionally **CAMT.054**) import with duplicate detection.
 - **Automatic payment matching** (invoice number → customer/supplier ID →
   remittance info → amount) with automatic `Payment Entry` creation.
@@ -40,7 +40,7 @@ bench get-app https://github.com/SLAYh4ppii/ebics_bank_connector
 bench --site site1.local install-app ebics_bank_connector
 
 # 2. Install the EBICS backend library
-bench --site site1.local pip install ebics-python lxml
+bench --site site1.local pip install fintech lxml
 
 # 3. In ERPNext: Banking → Connect bank
 ```
@@ -84,7 +84,7 @@ ebics_bank_connector/
 
 ### EBICS backend is swappable
 
-The default backend uses [`ebics-python`](https://pypi.org/project/ebics-python/).
+The default backend uses [`fintech`](https://pypi.org/project/fintech/).
 A custom backend can be configured in **Bank Automation Settings** (Dashboard)
 via the "EBICS Backend" field, or as a fallback in `site_config.json`:
 
@@ -110,9 +110,10 @@ See `ebics_bank_connector/ebics/backends/ebics_python.py`.
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE).
+GPL-3.0-or-later — see [`LICENSE`](LICENSE).
 
-This software may be freely used, modified, and distributed. The copyright
-notice (`Copyright (c) 2026 h4ppii`) must, however, be preserved in all
-copies. Passing the work off as your own without attribution violates the
-license terms.
+This software is free software: you can use, modify, and distribute it under
+the terms of the GNU General Public License v3 (or later). The copyright notice
+(`Copyright (C) 2026 h4ppii`) must be preserved in all copies. Modified versions
+must also be released under the GPL-3.0 with source code. Commercial use within
+ERPNext deployments is permitted; closed-source redistribution is not.

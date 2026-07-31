@@ -42,7 +42,7 @@
    "fieldtype": "Data",
    "label": "EBICS Backend (Modul-Pfad)",
    "default": "ebics_bank_connector.ebics.backends.ebics_python",
-   "description": "Python-Modulpfad des EBICS-Backends. Standard: ebics-python. Fallback: site_config.json Schl\u00fcssel 'ebics_backend'."
+   "description": "Python-Modulpfad des EBICS-Backends. Standard: fintech. Fallback: site_config.json Schl\u00fcssel 'ebics_backend'."
   },
   {
    "fieldname": "auto_match_enabled",

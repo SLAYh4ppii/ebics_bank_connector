@@ -3,7 +3,7 @@ app_title = "EBICS Bank Connector"
 app_publisher = "h4ppii"
 app_description = "EBICS banking automation for ERPNext 16 (VR-Bank NordRhön eG and other EBICS banks)"
 app_email = ""
-app_license = "MIT"
+app_license = "GPL-3.0-or-later"
 
 required_apps = ["erpnext"]
 
