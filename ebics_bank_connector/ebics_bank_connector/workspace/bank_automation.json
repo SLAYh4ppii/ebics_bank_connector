@@ -55,7 +55,7 @@
  "label": "Bank Automation",
  "links": [],
  "modified": "2026-07-31 00:00:00",
- "module": "Ebics Bank Connector",
+ "module": "ebics_bank_connector",
  "name": "Bank Automation",
  "owner": "Administrator",
  "parent_page": "",

@@ -4,7 +4,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Banking Setup Wizard",
- "module": "Ebics Bank Connector",
+ "module": "ebics_bank_connector",
  "name": "banking_setup_wizard",
  "page_name": "Banking Setup Wizard",
  "modified": "2026-07-31 00:00:00",

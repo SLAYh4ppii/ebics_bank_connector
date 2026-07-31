@@ -95,7 +95,7 @@
  "index_web_pages_for_search": 0,
  "links": [],
  "modified": "2026-07-31 00:00:00",
- "module": "Ebics Bank Connector",
+ "module": "ebics_bank_connector",
  "name": "EBICS Bank Account",
  "naming_rule": "By \"Naming Series\" fieldtype",
  "owner": "Administrator",

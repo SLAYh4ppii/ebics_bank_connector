@@ -1,0 +1,6 @@
+Fix module name in all doctype/page/workspace JSON files
+
+The "module" field was set to "Ebics Bank Connector" (the app title)
+but Frappe expects the module name from modules.txt, which is
+"ebics_bank_connector". This caused the Workspace and all doctypes
+to not be registered properly during migrate.
