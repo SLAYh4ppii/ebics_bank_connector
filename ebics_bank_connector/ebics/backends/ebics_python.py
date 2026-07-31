@@ -37,14 +37,13 @@ def create(
 ):
     try:
         import fintech
+        fintech.register()
         from fintech.ebics import EbicsKeyRing, EbicsBank, EbicsUser, EbicsClient
     except ImportError as exc:  # pragma: no cover - depends on env
         raise RuntimeError(
             "Die Bibliothek 'fintech' ist nicht installiert. "
             "Bitte 'pip install fintech' bzw. 'bench pip install fintech' ausf\u00fchren."
         ) from exc
-
-    fintech.register()
 
     keyring = EbicsKeyRing(
         keys=keyring_path,
