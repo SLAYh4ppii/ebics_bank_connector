@@ -1,0 +1,123 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-07-31 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "ebics_settings",
+  "iban",
+  "account_number",
+  "currency",
+  "account_type",
+  "column_break_1",
+  "bank_account",
+  "enabled",
+  "last_transaction_id",
+  "last_synced_at"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "EBICS-ACC-.YYYY.-",
+   "default": "EBICS-ACC-.YYYY.-",
+   "hidden": 1
+  },
+  {
+   "fieldname": "ebics_settings",
+   "fieldtype": "Link",
+   "label": "EBICS Verbindung",
+   "options": "EBICS Settings",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "iban",
+   "fieldtype": "Data",
+   "label": "IBAN",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Kontonummer"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "W\u00e4hrung",
+   "options": "Currency",
+   "reqd": 1,
+   "default": "EUR"
+  },
+  {
+   "fieldname": "account_type",
+   "fieldtype": "Select",
+   "label": "Kontotyp",
+   "options": "Girokonto\nTagesgeld\nKreditkarte\nSonstiges",
+   "default": "Girokonto"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bank_account",
+   "fieldtype": "Link",
+   "label": "ERPNext Bank Account",
+   "options": "Bank Account",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Aktiv",
+   "default": 1
+  },
+  {
+   "fieldname": "last_transaction_id",
+   "fieldtype": "Data",
+   "label": "Letzte Transaktions-ID (Cursor)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_synced_at",
+   "fieldtype": "Datetime",
+   "label": "Letzte Synchronisation",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-07-31 00:00:00",
+ "module": "Ebics Bank Connector",
+ "name": "EBICS Bank Account",
+ "naming_rule": "By \"Naming Series\" fieldtype",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1, "delete": 1, "email": 1, "export": 1, "if_owner": 0,
+   "import": 0, "permlevel": 0, "print": 1, "read": 1, "report": 1,
+   "role": "Bank Administrator", "share": 1, "submit": 0, "write": 1
+  },
+  {
+   "create": 0, "delete": 0, "email": 1, "export": 1, "if_owner": 0,
+   "import": 0, "permlevel": 0, "print": 1, "read": 1, "report": 1,
+   "role": "Bank Buchhalter", "share": 1, "submit": 0, "write": 1
+  },
+  {
+   "create": 0, "delete": 0, "email": 0, "export": 0, "if_owner": 0,
+   "import": 0, "permlevel": 0, "print": 0, "read": 1, "report": 0,
+   "role": "Bank Mitarbeiter", "share": 0, "submit": 0, "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

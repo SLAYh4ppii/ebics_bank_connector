@@ -1,0 +1,33 @@
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "ebics_bank_connector"
+authors = [{name = "EBICS Bank Connector", email = "admin@example.com"}]  # TODO: real email before publish
+description = "EBICS banking automation for ERPNext 16"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dynamic = ["version"]
+dependencies = [
+    # EBICS protocol backend (default, swappable via connection.py)
+    "ebics-python>=1.0.0",
+    # CAMT.053 / ISO 20022 XML parsing
+    "lxml>=4.9",
+]
+
+[project.urls]
+Homepage = "https://github.com/example/ebics_bank_connector"  # TODO: real repo URL before publish
+
+[tool.bench.frappe-dependencies]
+frappe = ">=16.0.0"
+erpnext = ">=16.0.0"
+
+[tool.bench.app]
+app_name = "ebics_bank_connector"
+app_title = "EBICS Bank Connector"
+app_publisher = "EBICS Bank Connector"
+app_description = "EBICS banking automation for ERPNext 16"
+app_email = "admin@example.com"
+app_license = "MIT"

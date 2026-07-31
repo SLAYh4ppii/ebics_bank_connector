@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Linters / type checkers / tests
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Frappe / bench
+*.log
+logs/
+node_modules/
+sites/*/site_config.json
+sites/*/private/
+sites/*/public/files/
+sites/*/public/backups/
+sites/assets/
+sites/common_site_config.json
+sites/database.db
+
+# EBICS / banking secrets (never commit credentials)
+*.p12
+*.pfx
+*.key
+*.pem
+*.cert
+*.crt
+secrets/
+.env
+.env.*
+!.env.example
+
+# IDE / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

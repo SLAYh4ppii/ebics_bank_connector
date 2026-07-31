@@ -1,0 +1,160 @@
+{
+ "actions": [],
+ "autoname": "EBICS-LOG-.YYYY.-.#####",
+ "creation": "2026-07-31 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "ebics_settings",
+  "ebics_bank_account",
+  "started_on",
+  "ended_on",
+  "column_break_1",
+  "status",
+  "transactions_imported",
+  "transactions_duplicate",
+  "transactions_matched",
+  "transactions_unmatched",
+  "section_details",
+  "order_type",
+  "from_date",
+  "to_date",
+  "column_break_2",
+  "raw_xml_file",
+  "error_message"
+ ],
+ "fields": [
+  {
+   "fieldname": "ebics_settings",
+   "fieldtype": "Link",
+   "label": "EBICS Verbindung",
+   "options": "EBICS Settings",
+   "in_list_view": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "ebics_bank_account",
+   "fieldtype": "Link",
+   "label": "EBICS Konto",
+   "options": "EBICS Bank Account",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "started_on",
+   "fieldtype": "Datetime",
+   "label": "Gestartet",
+   "in_list_view": 1,
+   "reqd": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "ended_on",
+   "fieldtype": "Datetime",
+   "label": "Beendet",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Erfolgreich\nTeilweise\nFehler",
+   "in_list_view": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "transactions_imported",
+   "fieldtype": "Int",
+   "label": "Importierte Ums\u00e4tze",
+   "read_only": 1,
+   "default": 0
+  },
+  {
+   "fieldname": "transactions_duplicate",
+   "fieldtype": "Int",
+   "label": "Duplikate \u00fcbersprungen",
+   "read_only": 1,
+   "default": 0
+  },
+  {
+   "fieldname": "transactions_matched",
+   "fieldtype": "Int",
+   "label": "Automatisch zugeordnet",
+   "read_only": 1,
+   "default": 0
+  },
+  {
+   "fieldname": "transactions_unmatched",
+   "fieldtype": "Int",
+   "label": "Nicht zugeordnet",
+   "read_only": 1,
+   "default": 0
+  },
+  {
+   "fieldname": "section_details",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "order_type",
+   "fieldtype": "Data",
+   "label": "EBICS Auftragsart",
+   "read_only": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "Von"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "Bis"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "raw_xml_file",
+   "fieldtype": "Attach",
+   "label": "Original CAMT-XML"
+  },
+  {
+   "fieldname": "error_message",
+   "fieldtype": "Text",
+   "label": "Fehlermeldung",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "modified": "2026-07-31 00:00:00",
+ "module": "Ebics Bank Connector",
+ "name": "EBICS Sync Log",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1, "delete": 1, "email": 1, "export": 1, "if_owner": 0,
+   "import": 0, "permlevel": 0, "print": 1, "read": 1, "report": 1,
+   "role": "Bank Administrator", "share": 1, "submit": 0, "write": 0
+  },
+  {
+   "create": 0, "delete": 0, "email": 1, "export": 1, "if_owner": 0,
+   "import": 0, "permlevel": 0, "print": 1, "read": 1, "report": 1,
+   "role": "Bank Buchhalter", "share": 1, "submit": 0, "write": 0
+  },
+  {
+   "create": 0, "delete": 0, "email": 0, "export": 0, "if_owner": 0,
+   "import": 0, "permlevel": 0, "print": 0, "read": 1, "report": 0,
+   "role": "Bank Mitarbeiter", "share": 0, "submit": 0, "write": 0
+  }
+ ],
+ "sort_field": "started_on",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

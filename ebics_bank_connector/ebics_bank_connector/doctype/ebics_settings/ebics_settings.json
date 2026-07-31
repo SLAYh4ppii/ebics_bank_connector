@@ -1,0 +1,335 @@
+{
+ "actions": [],
+ "autoname": "field:connection_name",
+ "creation": "2026-07-31 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "connection_name",
+  "bank_preset",
+  "bank",
+  "column_break_1",
+  "status",
+  "keys_initialized",
+  "last_sync",
+  "error_count",
+  "last_error_on",
+  "section_ebics",
+  "host_url",
+  "host_id",
+  "partner_id",
+  "user_id",
+  "customer_id",
+  "column_break_2",
+  "ebics_version",
+  "signature_version",
+  "encryption_version",
+  "authentication_version",
+  "section_keys",
+  "keys_passphrase",
+  "keys_status",
+  "ini_done",
+  "hia_done",
+  "hpb_done",
+  "section_sync",
+  "sync_enabled",
+  "sync_frequency",
+  "default_bank_account",
+  "column_break_3",
+  "auto_match",
+  "import_camt054",
+  "section_advanced",
+  "raw_xml_storage",
+  "notify_on_error"
+ ],
+ "fields": [
+  {
+   "fieldname": "connection_name",
+   "fieldtype": "Data",
+   "label": "Verbindungsname",
+   "reqd": 1,
+   "unique": 1,
+   "description": "z.B. \"VR-Bank NordRhön - Girokonto\""
+  },
+  {
+   "fieldname": "bank_preset",
+   "fieldtype": "Select",
+   "label": "Bank ausw\u00e4hlen",
+   "options": "\nVR-Bank\nVolksbank\nSparkasse\nAndere EBICS Bank",
+   "default": "VR-Bank",
+   "reqd": 1
+  },
+  {
+   "fieldname": "bank",
+   "fieldtype": "Link",
+   "label": "ERPNext Bank",
+   "options": "Bank"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Entwurf\nVerbunden\nFehler\nDeaktiviert",
+   "default": "Entwurf",
+   "read_only": 1
+  },
+  {
+   "fieldname": "keys_initialized",
+   "fieldtype": "Check",
+   "label": "Schl\u00fcssel initialisiert",
+   "read_only": 1,
+   "default": 0
+  },
+  {
+   "fieldname": "last_sync",
+   "fieldtype": "Datetime",
+   "label": "Letzte Synchronisation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "error_count",
+   "fieldtype": "Int",
+   "label": "Fehlerz\u00e4hler",
+   "read_only": 1,
+   "default": 0,
+   "hidden": 1
+  },
+  {
+   "fieldname": "last_error_on",
+   "fieldtype": "Datetime",
+   "label": "Letzter Fehler am",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "section_ebics",
+   "fieldtype": "Section Break",
+   "label": "EBICS Zugangsdaten"
+  },
+  {
+   "fieldname": "host_url",
+   "fieldtype": "Data",
+   "label": "Host URL",
+   "reqd": 1,
+   "description": "z.B. https://banking.vr-nordrhoen.de/ebics/ebics.aspx"
+  },
+  {
+   "fieldname": "host_id",
+   "fieldtype": "Data",
+   "label": "Host ID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "partner_id",
+   "fieldtype": "Data",
+   "label": "Partner ID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "user_id",
+   "fieldtype": "Data",
+   "label": "User ID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_id",
+   "fieldtype": "Data",
+   "label": "Customer ID (Kunden-Nr.)"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ebics_version",
+   "fieldtype": "Select",
+   "label": "EBICS Version",
+   "options": "2.4\n2.5\n3.0",
+   "default": "3.0",
+   "reqd": 1
+  },
+  {
+   "fieldname": "signature_version",
+   "fieldtype": "Select",
+   "label": "Signatur-Version (A006)",
+   "options": "A005\nA006",
+   "default": "A006"
+  },
+  {
+   "fieldname": "encryption_version",
+   "fieldtype": "Select",
+   "label": "Verschl\u00fcsselungs-Version (E002)",
+   "options": "E001\nE002",
+   "default": "E002"
+  },
+  {
+   "fieldname": "authentication_version",
+   "fieldtype": "Select",
+   "label": "Authentifizierungs-Version (X002)",
+   "options": "X001\nX002",
+   "default": "X002"
+  },
+  {
+   "fieldname": "section_keys",
+   "fieldtype": "Section Break",
+   "label": "EBICS Schl\u00fcssel"
+  },
+  {
+   "fieldname": "keys_passphrase",
+   "fieldtype": "Password",
+   "label": "Schl\u00fcssel-Passphrase",
+   "description": "Sch\u00fctzt die lokal gespeicherten EBICS-Schl\u00fcssel. Wird verschl\u00fcsselt gespeichert."
+  },
+  {
+   "fieldname": "keys_status",
+   "fieldtype": "Select",
+   "label": "Schl\u00fcssel-Status",
+   "options": "Nicht erstellt\nINI gesendet\nHIA gesendet\nAktiv (HPB empfangen)",
+   "default": "Nicht erstellt",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ini_done",
+   "fieldtype": "Check",
+   "label": "INI gesendet",
+   "read_only": 1,
+   "default": 0
+  },
+  {
+   "fieldname": "hia_done",
+   "fieldtype": "Check",
+   "label": "HIA gesendet",
+   "read_only": 1,
+   "default": 0
+  },
+  {
+   "fieldname": "hpb_done",
+   "fieldtype": "Check",
+   "label": "HPB empfangen",
+   "read_only": 1,
+   "default": 0
+  },
+  {
+   "fieldname": "section_sync",
+   "fieldtype": "Section Break",
+   "label": "Synchronisation"
+  },
+  {
+   "fieldname": "sync_enabled",
+   "fieldtype": "Check",
+   "label": "Synchronisation aktiv",
+   "default": 1
+  },
+  {
+   "fieldname": "sync_frequency",
+   "fieldtype": "Select",
+   "label": "Synchronisations-Intervall",
+   "options": "St\u00fcndlich\nT\u00e4glich",
+   "default": "St\u00fcndlich"
+  },
+  {
+   "fieldname": "default_bank_account",
+   "fieldtype": "Link",
+   "label": "Standard ERPNext Bank Account",
+   "options": "Bank Account"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "auto_match",
+   "fieldtype": "Check",
+   "label": "Automatische Zahlungszuordnung",
+   "default": 1
+  },
+  {
+   "fieldname": "import_camt054",
+   "fieldtype": "Check",
+   "label": "CAMT.054 (Buchungsdetails) importieren",
+   "default": 0
+  },
+  {
+   "fieldname": "section_advanced",
+   "fieldtype": "Section Break",
+   "label": "Erweitert"
+  },
+  {
+   "fieldname": "raw_xml_storage",
+   "fieldtype": "Check",
+   "label": "Original-CAMT-XML speichern (Fehleranalyse)",
+   "default": 1
+  },
+  {
+   "fieldname": "notify_on_error",
+   "fieldtype": "Check",
+   "label": "Admin bei Fehler benachrichtigen",
+   "default": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "is_submittable": 0,
+ "modified": "2026-07-31 00:00:00",
+ "module": "Ebics Bank Connector",
+ "name": "EBICS Settings",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "if_owner": 0,
+   "import": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Bank Administrator",
+   "share": 1,
+   "submit": 0,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "if_owner": 0,
+   "import": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Bank Buchhalter",
+   "share": 1,
+   "submit": 0,
+   "write": 0
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "if_owner": 0,
+   "import": 0,
+   "permlevel": 0,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "Bank Mitarbeiter",
+   "share": 0,
+   "submit": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

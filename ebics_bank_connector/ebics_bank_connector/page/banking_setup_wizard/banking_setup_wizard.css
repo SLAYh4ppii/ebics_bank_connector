@@ -1,0 +1,20 @@
+.ebics-wizard { max-width: 820px; margin: 20px auto; }
+.ebics-progress { display: flex; align-items: center; margin-bottom: 24px; }
+.ebics-step {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border-radius: 20px; background: #f4f5f6; color: #888;
+}
+.ebics-step.active { background: #2490ef; color: #fff; }
+.ebics-step.done { background: #d1f5e0; color: #1a7d3a; }
+.ebics-step-num {
+    width: 24px; height: 24px; border-radius: 50%; background: #fff; color: #2490ef;
+    display: flex; align-items: center; justify-content: center; font-weight: 600;
+}
+.ebics-step.active .ebics-step-num { color: #2490ef; }
+.ebics-step-sep { flex: 1; height: 2px; background: #e5e6e7; margin: 0 8px; }
+.ebics-card {
+    background: #fff; border: 1px solid #ebeff2; border-radius: 8px;
+    padding: 28px 32px; min-height: 280px;
+}
+.ebics-actions { display: flex; justify-content: space-between; margin-top: 18px; }
+.ebics-actions .btn-ebics-next { margin-left: auto; }

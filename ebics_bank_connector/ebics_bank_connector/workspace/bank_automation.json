@@ -1,0 +1,70 @@
+{
+ "blocks": [
+  {
+   "block_type": "Header",
+   "block_data": {
+    "title": "Bank Automation",
+    "subtitle": "EBICS Bankverbindung & automatische Zahlungszuordnung"
+   }
+  },
+  {
+   "block_type": "Shortcut",
+   "block_data": {
+    "shortcuts": [
+     {"label": "Bank verbinden", "type": "Page", "link_to": "banking_setup_wizard", "icon": "plug"},
+     {"label": "EBICS Verbindungen", "type": "DocType", "link_to": "EBICS Settings", "icon": "settings"},
+     {"label": "EBICS Konten", "type": "DocType", "link_to": "EBICS Bank Account", "icon": "bank"},
+     {"label": "Synchronisations-Protokoll", "type": "DocType", "link_to": "EBICS Sync Log", "icon": "history"},
+     {"label": "Zahlungen pr\u00fcfen", "type": "DocType", "link_to": "Payment Matching Task", "icon": "search"},
+     {"label": "Einstellungen", "type": "DocType", "link_to": "Bank Automation Settings", "icon": "settings"}
+    ]
+   }
+  },
+  {
+   "block_type": "Card",
+   "block_data": {
+    "card_name": "Bank Status",
+    "stats": [
+     {"label": "Aktive Verbindungen", "value": "=frappe.db.count('EBICS Settings', {'status':'Verbunden'})", "datatype": "number"},
+     {"label": "Letzte Synchronisation", "value": "=frappe.db.get_value('EBICS Settings', {'status':'Verbunden'}, 'last_sync')", "datatype": "datetime"},
+     {"label": "Fehler heute", "value": "=frappe.db.count('EBICS Sync Log', {'status':'Fehler', 'started_on':['>=', frappe.utils.today()]})", "datatype": "number"}
+    ]
+   }
+  },
+  {
+   "block_type": "Card",
+   "block_data": {
+    "card_name": "Ums\u00e4tze & Zuordnung",
+    "stats": [
+     {"label": "Neue Ums\u00e4tze (heute)", "value": "=frappe.db.count('Bank Transaction', {'date':['>=', frappe.utils.today()]})", "datatype": "number"},
+     {"label": "Nicht zugeordnete Zahlungen", "value": "=frappe.db.count('Payment Matching Task', {'status':'Offen'})", "datatype": "number"},
+     {"label": "Automatisch zugeordnet (heute)", "value": "=frappe.db.count('Payment Entry', {'docstatus':1, 'posting_date':['>=', frappe.utils.today()]})", "datatype": "number"}
+    ]
+   }
+  }
+ ],
+ "creation": "2026-07-31 00:00:00",
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "bank",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "label": "Bank Automation",
+ "links": [],
+ "modified": "2026-07-31 00:00:00",
+ "module": "Ebics Bank Connector",
+ "name": "Bank Automation",
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "roles": [
+  {"role": "Bank Administrator"},
+  {"role": "Bank Buchhalter"},
+  {"role": "Bank Mitarbeiter"}
+ ],
+ "sequence_id": 100,
+ "title": "Bank Automation"
+}

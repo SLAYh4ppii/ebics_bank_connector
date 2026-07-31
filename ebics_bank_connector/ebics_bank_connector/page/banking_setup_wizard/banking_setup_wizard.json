@@ -1,0 +1,20 @@
+{
+ "creation": "2026-07-31 00:00:00",
+ "doctype": "Page",
+ "idx": 0,
+ "is_standard": 1,
+ "label": "Banking Setup Wizard",
+ "module": "Ebics Bank Connector",
+ "name": "banking_setup_wizard",
+ "page_name": "Banking Setup Wizard",
+ "modified": "2026-07-31 00:00:00",
+ "owner": "Administrator",
+ "roles": [
+  {"role": "Bank Administrator"},
+  {"role": "System Manager"}
+ ],
+ "script": "banking_setup_wizard.js",
+ "style": "banking_setup_wizard.css",
+ "system": 0,
+ "title": "Bank verbinden"
+}
